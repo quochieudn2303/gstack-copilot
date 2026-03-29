@@ -2,21 +2,24 @@
 
 ## What This Is
 
-A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. Converts gstack's SKILL.md format to Copilot-compatible skills, maps tool invocations (Bash → PowerShell, gstack browse → chrome-devtools), and provides a setup script for installation. Starting with core sprint skills: /office-hours, /review, /qa, /ship.
+A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. The repository now includes a working Phase 1 converter CLI that transforms gstack `SKILL.md` files into Copilot-compatible skills, rewrites core paths, and emits valid Copilot frontmatter. The remaining phases extend that core into full shell translation, browser abstraction, and the first shipped skills: /office-hours, /review, /qa, /ship.
 
 ## Core Value
 
 Enable Copilot CLI users to leverage gstack's structured sprint workflow (think → plan → build → review → test → ship) — the same process that powers 10-20K LOC/day productivity.
 
+## Current State
+
+Phase 1 is complete as of 2026-03-30. `gstack-copilot convert` works end-to-end against representative gstack fixtures, including strict frontmatter validation, path remapping, Copilot output generation, and actionable conversion errors. Phase 2 is next: expand the mapping layer from simple path/tool aliases into full Bash → PowerShell translation coverage.
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- Phase 1 (2026-03-30): Core converter CLI parses gstack SKILL.md files, rewrites core paths/tool aliases, and emits valid Copilot SKILL.md output
 
 ### Active
 
-- [ ] Format converter that transforms gstack SKILL.md files to Copilot-compatible format
 - [ ] Tool mapping layer: Bash → PowerShell, Claude-specific constructs → Copilot equivalents
 - [ ] Browser abstraction supporting both chrome-devtools MCP and Playwright
 - [ ] /office-hours skill — product discovery and design doc generation
@@ -61,9 +64,10 @@ Enable Copilot CLI users to leverage gstack's structured sprint workflow (think 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Skill files over MCP server | Direct 1:1 mapping with gstack format, native Copilot discovery | — Pending |
-| Adapter layer, not rewrite | Leverage existing gstack quality, easier to maintain | — Pending |
+| Adapter layer, not rewrite | Leverage existing gstack quality, easier to maintain | Phase 1 validated the approach with a real converter pipeline |
 | Support both browser backends | Flexibility — native chrome-devtools for simple tasks, Playwright for complex automation | — Pending |
-| Core skills first | Validate approach with essential sprint workflow before expanding | — Pending |
+| Core skills first | Validate approach with essential sprint workflow before expanding | Phase 1 foundation complete; `/review` remains the first target skill |
+| Ordered parse → transform → generate pipeline | Keeps transformation logic testable and extensible | Implemented in Phase 1 |
 
 ## Evolution
 
@@ -83,4 +87,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-29 after initialization*
+*Last updated: 2026-03-30 after Phase 1 completion*

@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Core Conversion Pipeline** - SKILL.md parser + path remapping + frontmatter transformer
+- [x] **Phase 1: Core Conversion Pipeline** - SKILL.md parser + path remapping + frontmatter transformer
 - [ ] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
 - [ ] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
 - [ ] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
@@ -29,7 +29,8 @@
   2. Output SKILL.md has valid Copilot YAML frontmatter (`allowed-tools`, `argument-hint`)
   3. Paths in output use Windows conventions (`$env:USERPROFILE`, backslashes)
   4. Cross-skill references point to correct Copilot skill locations
-**Plans**: TBD
+**Plans**: 01-01 Foundation, 01-02 Parse/Transform, 01-03 Output/CLI  
+**Completed**: 2026-03-30
 
 ---
 
@@ -104,7 +105,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Conversion Pipeline | 0/? | Not started | - |
+| 1. Core Conversion Pipeline | 3/3 | Complete | 2026-03-30 |
 | 2. Command Translation Layer | 0/? | Not started | - |
 | 3. First Skill - /review | 0/? | Not started | - |
 | 4. Browser Abstraction | 0/? | Not started | - |

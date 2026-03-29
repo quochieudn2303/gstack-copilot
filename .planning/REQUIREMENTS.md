@@ -2,7 +2,7 @@
 
 **Project:** Copilot CLI port of gstack
 **Version:** v1.0
-**Last Updated:** 2025-01-20
+**Last Updated:** 2026-03-30
 
 ## Summary
 
@@ -88,10 +88,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CONV-01 | Phase 1 | Pending |
-| CONV-02 | Phase 1 | Pending |
-| CONV-03 | Phase 1 | Pending |
-| CONV-04 | Phase 1 | Pending |
+| CONV-01 | Phase 1 | Complete (2026-03-30) |
+| CONV-02 | Phase 1 | Complete (2026-03-30) |
+| CONV-03 | Phase 1 | Complete (2026-03-30) |
+| CONV-04 | Phase 1 | Complete (2026-03-30) |
 | TOOL-01 | Phase 2 | Pending |
 | TOOL-02 | Phase 2 | Pending |
 | TOOL-03 | Phase 2 | Pending |
