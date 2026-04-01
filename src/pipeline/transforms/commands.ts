@@ -9,8 +9,8 @@ import {
   findCommandMapping,
   findTestExpressionMapping,
   isKnownCommand,
-  CommandMatchResult,
 } from "../../mappings/commands.js";
+import type { CommandMatchResult } from "../../mappings/commands.js";
 
 /**
  * Options for command transformation
@@ -54,6 +54,22 @@ export function transformCommand(
     return { line: command, transformed: false };
   }
 
+  // Leave already-translated PowerShell alone.
+  if (looksLikePowerShell(trimmed)) {
+    return { line: command, transformed: true };
+  }
+
+  const compound = tryTransformCompoundCommand(trimmed, options);
+  if (compound) {
+    return { line: compound, transformed: true };
+  }
+
+  // Translate simple shell assignments before command matching.
+  const assignment = tryTransformVariableAssignment(trimmed);
+  if (assignment) {
+    return { line: assignment, transformed: true };
+  }
+
   // Try to match as a test expression first
   const testMatch = tryTransformTestExpression(trimmed);
   if (testMatch) {
@@ -95,6 +111,63 @@ export function transformCommand(
   }
 
   return { line: command, transformed: false };
+}
+
+function looksLikePowerShell(line: string): boolean {
+  return (
+    /^\$/.test(line) ||
+    /^if\s*\(/.test(line) ||
+    /^Set-(?:Variable|Item)\b/.test(line) ||
+    /^(?:Write-Output|Get-Content|New-Item|Select-String|Split-Path|Remove-Item|Copy-Item|Move-Item|Sort-Object|Where-Object|Measure-Object|ForEach-Object|Test-Path|Out-File|Add-Content)\b/.test(
+      line
+    ) ||
+    /^[{}]$/.test(line)
+  );
+}
+
+function tryTransformVariableAssignment(line: string): string | undefined {
+  const match = /^([A-Za-z_][A-Za-z0-9_]*)=(.+)$/.exec(line);
+  if (!match) {
+    return undefined;
+  }
+
+  const [, varName, value] = match;
+  const target = varName.startsWith("_") ? `$${varName}` : `$env:${varName}`;
+  return `${target} = ${value.trim()}`;
+}
+
+function tryTransformCompoundCommand(
+  command: string,
+  options: CommandTransformOptions
+): string | undefined {
+  const andPattern = /^(.*?);\s*if \(\$\?\) \{ (.+) \}$/;
+  const orPattern = /^(.*?);\s*if \(-not \$\?\) \{ (.+) \}$/;
+
+  const match = andPattern.exec(command) ?? orPattern.exec(command);
+  if (!match) {
+    return undefined;
+  }
+
+  const [, left, right] = match;
+  const operator = andPattern.test(command) ? "and" : "or";
+
+  const leftResult = transformCommand(left.trim(), {
+    ...options,
+    markUnknown: false,
+  });
+  const rightResult = transformCommand(right.trim(), {
+    ...options,
+    markUnknown: false,
+  });
+
+  const leftLine = leftResult.line ?? left.trim();
+  const rightLine = rightResult.line ?? right.trim();
+
+  if (operator === "and") {
+    return `${leftLine}; if ($?) { ${rightLine} }`;
+  }
+
+  return `${leftLine}; if (-not $?) { ${rightLine} }`;
 }
 
 /**

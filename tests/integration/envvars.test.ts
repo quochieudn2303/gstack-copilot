@@ -52,8 +52,8 @@ fi
       const result = transformEnvVarsStage(qaContent);
 
       expect(result).toContain("$env:USERPROFILE/.gstack/sessions");
-      expect(result).toContain('if [ "$env:_SESSIONS" -gt 0 ]');
-      expect(result).toContain("echo \"Active sessions: $env:_SESSIONS\"");
+      expect(result).toContain('if [ "$_SESSIONS" -gt 0 ]');
+      expect(result).toContain('echo "Active sessions: $_SESSIONS"');
     });
 
     it("transforms office-hours skill state management", () => {
@@ -111,7 +111,7 @@ echo "Duration: $_TEL_DUR seconds"
       // so we only transform the ones that do have $
       expect(result).toContain("_TEL_START=$(date +%s)");
       expect(result).toContain("_TEL_END=$(date +%s)");
-      expect(result).toContain('echo "Duration: $env:_TEL_DUR seconds"');
+      expect(result).toContain('echo "Duration: $_TEL_DUR seconds"');
     });
   });
 

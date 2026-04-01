@@ -45,8 +45,8 @@ echo "~/.claude/skills/gstack/review/"
 
     const result = transformContent(content);
 
-    expect(result).toContain("```bash");
-    expect(result).toContain('echo "~/.copilot/skills/gstack-review/"');
+    expect(result).toContain("```powershell");
+    expect(result).toContain('Write-Output "~/.copilot/skills/gstack-review/"');
   });
 
   it("does not transform unrelated URLs", () => {
@@ -55,13 +55,14 @@ echo "~/.claude/skills/gstack/review/"
     expect(transformContent(content)).toContain("https://example.com/docs");
   });
 
-  it("throws on unsupported Bash constructs with line numbers", () => {
+  it("translates process substitution patterns instead of throwing", () => {
     const content = `## Process
 
 source <(echo "hello")`;
 
-    expect(() => transformContent(content, "skill.md")).toThrow(
-      /unsupported bash process substitution/i,
-    );
+    const result = transformContent(content, "skill.md");
+
+    expect(result).toContain('$_sourceOutput = & "echo" "hello"');
+    expect(result).toContain('Set-Item -Path "Env:$($Matches[1])"');
   });
 });

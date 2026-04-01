@@ -116,15 +116,23 @@ export function transformKnownEnvVars(content: string): string {
  */
 export function transformUnknownEnvVars(content: string): string {
   let result = content;
+  const reservedNames = new Set([
+    "PWD",
+    "env",
+    "Matches",
+    "null",
+    "true",
+    "false",
+    "PSItem",
+    "_",
+  ]);
 
   // Pattern for ${VAR} brace syntax - not escaped
   const bracePattern = /(?<!\\)\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g;
 
   // Transform brace syntax first: ${VAR} -> $env:VAR
   result = result.replace(bracePattern, (_match, varName) => {
-    // Skip if it's PWD (same in PowerShell)
-    if (varName === "PWD") return `$${varName}`;
-    // Skip if already looks like PowerShell (env:*)
+    if (reservedNames.has(varName) || varName.startsWith("_")) return `$${varName}`;
     if (varName.startsWith("env:")) return `$${varName}`;
     return `$env:${varName}`;
   });
@@ -140,14 +148,9 @@ export function transformUnknownEnvVars(content: string): string {
 
   // Transform simple syntax: $VAR -> $env:VAR
   result = result.replace(simplePattern, (_match, varName) => {
-    // Skip if it's PWD (same in PowerShell)
-    if (varName === "PWD") return `$${varName}`;
-    // Skip special positional/numeric vars
     if (/^\d+$/.test(varName)) return `$${varName}`;
-    // Skip if already PowerShell syntax (env:*)
+    if (reservedNames.has(varName) || varName.startsWith("_")) return `$${varName}`;
     if (varName.startsWith("env:")) return `$${varName}`;
-    // Skip the PowerShell "env" prefix itself (it's followed by :)
-    if (varName === "env") return `$${varName}`;
     return `$env:${varName}`;
   });
 

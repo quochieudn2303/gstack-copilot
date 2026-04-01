@@ -98,13 +98,15 @@ describe("gstack-copilot CLI", () => {
     expect(stripAnsi(result.stderr)).toContain("tests/fixtures/invalid-skill.md");
   });
 
-  it("reports unsupported constructs with filepath and line number", () => {
-    const result = runCli(["convert", "tests/fixtures/unsupported-skill.md"]);
+  it("translates process substitution constructs through the CLI", () => {
+    const result = runCli([
+      "convert",
+      "tests/fixtures/unsupported-skill.md",
+      "--dry-run",
+    ]);
 
-    expect(result.status).toBe(1);
-
-    const stderr = stripAnsi(result.stderr);
-    expect(stderr).toContain("tests/fixtures/unsupported-skill.md:4");
-    expect(stderr).toContain("Unsupported Bash process substitution");
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('$_sourceOutput = & "echo" "hello"');
+    expect(result.stdout).toContain('Set-Item -Path "Env:$($Matches[1])"');
   });
 });

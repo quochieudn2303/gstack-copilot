@@ -1,0 +1,240 @@
+{
+  "idioms": [
+    {
+      "name": "process_substitution",
+      "category": "structural",
+      "bash_pattern": "source <({cmd})",
+      "transform": "explicit_two_step",
+      "powershell_template": "$_output = & \"{cmd}\"\nif ($_output) { parse KEY=VALUE and set variables }",
+      "notes": "Most critical — appears in every gstack preamble. Requires explicit capture and parse.",
+      "priority": "high",
+      "examples": [
+        {
+          "bash": "source <($GSTACK_BIN/gstack-repo-mode 2>/dev/null) || true",
+          "description": "Load repo mode variables"
+        },
+        {
+          "bash": "source <($GSTACK_BIN/gstack-config 2>/dev/null) || true",
+          "description": "Load configuration variables"
+        }
+      ]
+    },
+    {
+      "name": "default_value_use",
+      "category": "variable",
+      "bash_pattern": "${{{var}:-{default}}}",
+      "powershell": "($var ? $var : '{default}')",
+      "powershell_statement": "if (-not $var) { $var = '{default}' }",
+      "notes": "Use default if var is unset/empty. Inline vs statement form depends on context.",
+      "priority": "high",
+      "examples": [
+        {
+          "bash": "REPO_MODE=${REPO_MODE:-unknown}",
+          "powershell": "if (-not $REPO_MODE) { $REPO_MODE = 'unknown' }",
+          "description": "Set default repo mode"
+        }
+      ]
+    },
+    {
+      "name": "default_value_assign",
+      "category": "variable",
+      "bash_pattern": "${{{var}:={default}}}",
+      "powershell": "if (-not $var) { $var = '{default}' }",
+      "notes": "Assign default if var is unset/empty. Similar to :- but always assigns.",
+      "priority": "medium"
+    },
+    {
+      "name": "alternate_value",
+      "category": "variable",
+      "bash_pattern": "${{{var}:+{alt}}}",
+      "powershell": "($var ? '{alt}' : $var)",
+      "notes": "Use alternate value if var IS set.",
+      "priority": "low"
+    },
+    {
+      "name": "and_chain",
+      "category": "conditional",
+      "bash_pattern": "{cmd1} && {cmd2}",
+      "powershell": "{cmd1}; if ($?) { {cmd2} }",
+      "notes": "Run cmd2 only if cmd1 succeeds.",
+      "priority": "medium",
+      "examples": [
+        {
+          "bash": "[ -f config.json ] && cat config.json",
+          "powershell": "if (Test-Path config.json -PathType Leaf) { Get-Content config.json }",
+          "description": "Read config only if it exists"
+        }
+      ]
+    },
+    {
+      "name": "or_chain",
+      "category": "conditional",
+      "bash_pattern": "{cmd1} || {cmd2}",
+      "powershell": "{cmd1}; if (-not $?) { {cmd2} }",
+      "notes": "Run cmd2 only if cmd1 fails.",
+      "priority": "medium",
+      "examples": [
+        {
+          "bash": "git status || echo 'Not a git repo'",
+          "powershell": "git status; if (-not $?) { Write-Output 'Not a git repo' }",
+          "description": "Fallback message if not in git repo"
+        }
+      ]
+    },
+    {
+      "name": "or_true",
+      "category": "conditional",
+      "bash_pattern": "{cmd} || true",
+      "powershell": "{cmd}; $null",
+      "notes": "Suppress command failure. Often used with source <(...).",
+      "priority": "high",
+      "examples": [
+        {
+          "bash": "rm -f temp.txt || true",
+          "powershell": "Remove-Item -Path temp.txt -Force -ErrorAction SilentlyContinue",
+          "description": "Delete file, ignore if missing"
+        }
+      ]
+    },
+    {
+      "name": "redirect_stderr_null",
+      "category": "redirection",
+      "bash_pattern": "2>/dev/null",
+      "powershell": "2>$null",
+      "notes": "Suppress stderr output.",
+      "priority": "high"
+    },
+    {
+      "name": "redirect_all_null",
+      "category": "redirection",
+      "bash_pattern": ">/dev/null 2>&1",
+      "powershell": "*>$null",
+      "notes": "Suppress all output (stdout and stderr).",
+      "priority": "high"
+    },
+    {
+      "name": "redirect_all_null_alt",
+      "category": "redirection",
+      "bash_pattern": "&>/dev/null",
+      "powershell": "*>$null",
+      "notes": "Suppress all output (bash shorthand).",
+      "priority": "medium"
+    },
+    {
+      "name": "redirect_stdout_null",
+      "category": "redirection",
+      "bash_pattern": ">/dev/null",
+      "powershell": ">$null",
+      "notes": "Suppress stdout output.",
+      "priority": "medium"
+    },
+    {
+      "name": "test_file_exists",
+      "category": "test",
+      "bash_pattern": "[ -f {file} ]",
+      "powershell": "(Test-Path {file} -PathType Leaf)",
+      "notes": "Test if regular file exists.",
+      "priority": "high"
+    },
+    {
+      "name": "test_dir_exists",
+      "category": "test",
+      "bash_pattern": "[ -d {dir} ]",
+      "powershell": "(Test-Path {dir} -PathType Container)",
+      "notes": "Test if directory exists.",
+      "priority": "high"
+    },
+    {
+      "name": "test_path_exists",
+      "category": "test",
+      "bash_pattern": "[ -e {path} ]",
+      "powershell": "(Test-Path {path})",
+      "notes": "Test if any path exists.",
+      "priority": "medium"
+    },
+    {
+      "name": "test_string_nonempty",
+      "category": "test",
+      "bash_pattern": "[ -n {var} ]",
+      "powershell": "({var} -ne '')",
+      "notes": "Test if string is non-empty.",
+      "priority": "high"
+    },
+    {
+      "name": "test_string_empty",
+      "category": "test",
+      "bash_pattern": "[ -z {var} ]",
+      "powershell": "([string]::IsNullOrEmpty({var}))",
+      "notes": "Test if string is empty or null.",
+      "priority": "high"
+    },
+    {
+      "name": "test_regex_match",
+      "category": "test",
+      "bash_pattern": "[[ {string} =~ {regex} ]]",
+      "powershell": "({string} -match '{regex}')",
+      "notes": "Regex match test (extended test syntax).",
+      "priority": "medium"
+    },
+    {
+      "name": "arithmetic_expansion",
+      "category": "variable",
+      "bash_pattern": "$(( {expr} ))",
+      "powershell": "({expr})",
+      "notes": "Arithmetic evaluation. PowerShell handles math natively.",
+      "priority": "medium",
+      "examples": [
+        {
+          "bash": "_TEL_DUR=$(( _TEL_END - _TEL_START ))",
+          "powershell": "$_TEL_DUR = $_TEL_END - $_TEL_START",
+          "description": "Calculate duration"
+        }
+      ]
+    },
+    {
+      "name": "command_substitution",
+      "category": "structural",
+      "bash_pattern": "$({cmd})",
+      "powershell": "$({cmd})",
+      "notes": "Command substitution. Similar in PowerShell but may need cmdlet translation.",
+      "priority": "medium"
+    },
+    {
+      "name": "backtick_substitution",
+      "category": "structural",
+      "bash_pattern": "`{cmd}`",
+      "powershell": "$({cmd})",
+      "notes": "Legacy backtick command substitution. Convert to $() form.",
+      "priority": "low"
+    }
+  ],
+  "categories": {
+    "structural": "Patterns that change code structure significantly",
+    "variable": "Variable expansion and manipulation patterns",
+    "conditional": "Command chaining and flow control",
+    "redirection": "I/O redirection patterns",
+    "test": "Conditional test expressions"
+  },
+  "transform_priorities": {
+    "description": "Order of transformation to avoid conflicts",
+    "order": [
+      "process_substitution",
+      "default_value_use",
+      "default_value_assign", 
+      "alternate_value",
+      "arithmetic_expansion",
+      "redirect_all_null",
+      "redirect_stderr_null",
+      "redirect_stdout_null",
+      "and_chain",
+      "or_chain",
+      "or_true",
+      "test_file_exists",
+      "test_dir_exists",
+      "test_path_exists",
+      "test_string_nonempty",
+      "test_string_empty",
+      "test_regex_match"
+    ]
+  }
+}
