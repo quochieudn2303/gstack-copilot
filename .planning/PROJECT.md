@@ -10,17 +10,17 @@ Enable Copilot CLI users to leverage gstack's structured sprint workflow (think 
 
 ## Current State
 
-Phase 1 is complete as of 2026-03-30. `gstack-copilot convert` works end-to-end against representative gstack fixtures, including strict frontmatter validation, path remapping, Copilot output generation, and actionable conversion errors. Phase 2 is next: expand the mapping layer from simple path/tool aliases into full Bash → PowerShell translation coverage.
+Phase 2 is complete as of 2026-04-02. The converter now handles the core command-translation layer end-to-end: declarative UNIX utility mappings, environment-variable rewriting, process substitution, shell idioms, and full content-pipeline orchestration. Phase 3 is next: use that completed infrastructure to port `/review` end-to-end in Copilot CLI.
 
 ## Requirements
 
 ### Validated
 
 - Phase 1 (2026-03-30): Core converter CLI parses gstack SKILL.md files, rewrites core paths/tool aliases, and emits valid Copilot SKILL.md output
+- Phase 2 (2026-04-02): Command translation layer converts core Bash utilities, environment variables, and process substitution into PowerShell-compatible output
 
 ### Active
 
-- [ ] Tool mapping layer: Bash → PowerShell, Claude-specific constructs → Copilot equivalents
 - [ ] Browser abstraction supporting both chrome-devtools MCP and Playwright
 - [ ] /office-hours skill — product discovery and design doc generation
 - [ ] /review skill — pre-landing code review with auto-fix capability
@@ -68,6 +68,7 @@ Phase 1 is complete as of 2026-03-30. `gstack-copilot convert` works end-to-end 
 | Support both browser backends | Flexibility — native chrome-devtools for simple tasks, Playwright for complex automation | — Pending |
 | Core skills first | Validate approach with essential sprint workflow before expanding | Phase 1 foundation complete; `/review` remains the first target skill |
 | Ordered parse → transform → generate pipeline | Keeps transformation logic testable and extensible | Implemented in Phase 1 |
+| Generated PowerShell must survive later pipeline stages | Multi-stage translation only works if later passes preserve already translated PowerShell | Validated in Phase 2 |
 
 ## Evolution
 
@@ -87,4 +88,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-30 after Phase 1 completion*
+*Last updated: 2026-04-02 after Phase 2 completion*

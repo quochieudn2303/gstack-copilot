@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Core Conversion Pipeline** - SKILL.md parser + path remapping + frontmatter transformer
-- [ ] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
+- [x] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
 - [ ] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
 - [ ] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
 - [ ] **Phase 5: Browser Skills - /qa, /office-hours** - High-value browser-using skills
@@ -43,7 +43,8 @@
   2. Environment variables (`$HOME`, `$GSTACK_ROOT`) become `$env:*` syntax
   3. Process substitution `source <(cmd)` becomes explicit two-step variable capture
   4. Mapping registry is JSON-based and extensible without code changes
-**Plans**: TBD
+**Plans**: 02-01 Inventory/Env Vars, 02-02 UNIX Utilities, 02-03 Process Substitution/Idioms  
+**Completed**: 2026-04-02
 
 ---
 
@@ -56,7 +57,7 @@
   2. Skill can read files, suggest fixes, and apply auto-corrections
   3. Review follows gstack's quality patterns (PR hygiene, test coverage checks)
   4. No browser dependency — validates core infrastructure without browser complexity
-**Plans**: TBD
+**Plans**: 03-01 Contract & Base Detection, 03-02 Review Skill Artifact, 03-03 Verification Harness & UAT
 
 ---
 
@@ -106,8 +107,8 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Conversion Pipeline | 3/3 | Complete | 2026-03-30 |
-| 2. Command Translation Layer | 0/? | Not started | - |
-| 3. First Skill - /review | 0/? | Not started | - |
+| 2. Command Translation Layer | 3/3 | Complete | 2026-04-02 |
+| 3. First Skill - /review | 0/3 | Planned | - |
 | 4. Browser Abstraction | 0/? | Not started | - |
 | 5. Browser Skills - /qa, /office-hours | 0/? | Not started | - |
 | 6. Sprint Completion - /ship | 0/? | Not started | - |
