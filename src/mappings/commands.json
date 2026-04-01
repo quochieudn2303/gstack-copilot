@@ -169,6 +169,101 @@
       "bash": "cd {dir}",
       "powershell": "Set-Location {dir}",
       "notes": "Change directory"
+    },
+    {
+      "bash": "sed {expr} {file}",
+      "powershell": "(Get-Content {file}) -replace {expr}",
+      "notes": "Stream editor (basic replace, file mode)"
+    },
+    {
+      "bash": "awk {script} {file}",
+      "powershell": "# TODO: awk requires manual translation - {script}",
+      "notes": "AWK processing (complex, needs manual review)"
+    },
+    {
+      "bash": "cut -d {delim} -f {field} {file}",
+      "powershell": "(Get-Content {file}) | ForEach-Object { ($_ -split {delim})[{field}-1] }",
+      "notes": "Cut fields from lines"
+    },
+    {
+      "bash": "cut -d {delim} -f {field}",
+      "powershell": "ForEach-Object { ($_ -split {delim})[{field}-1] }",
+      "notes": "Cut fields (pipe input)"
+    },
+    {
+      "bash": "tee {file}",
+      "powershell": "Tee-Object -FilePath {file}",
+      "notes": "Write to file and stdout"
+    },
+    {
+      "bash": "xargs {cmd}",
+      "powershell": "ForEach-Object { {cmd} $_ }",
+      "notes": "Execute command with piped args"
+    },
+    {
+      "bash": "which {cmd}",
+      "powershell": "Get-Command {cmd} -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source",
+      "notes": "Find command location"
+    },
+    {
+      "bash": "readlink -f {path}",
+      "powershell": "(Resolve-Path {path}).Path",
+      "notes": "Resolve canonical path"
+    },
+    {
+      "bash": "realpath {path}",
+      "powershell": "(Resolve-Path {path}).Path",
+      "notes": "Resolve real path"
+    },
+    {
+      "bash": "chmod {mode} {file}",
+      "powershell": "# Note: PowerShell uses ACLs not Unix permissions - {mode} {file}",
+      "notes": "Change permissions (not directly translatable)"
+    },
+    {
+      "bash": "chown {owner} {file}",
+      "powershell": "# Note: PowerShell uses ACLs not Unix ownership - {owner} {file}",
+      "notes": "Change owner (not directly translatable)"
+    },
+    {
+      "bash": "ln -s {target} {link}",
+      "powershell": "New-Item -ItemType SymbolicLink -Path {link} -Target {target}",
+      "notes": "Create symbolic link"
+    },
+    {
+      "bash": "stat {file}",
+      "powershell": "Get-Item {file} | Select-Object Name, Length, LastWriteTime, Mode",
+      "notes": "File status"
+    },
+    {
+      "bash": "file {path}",
+      "powershell": "Get-Item {path} | Select-Object Name, Extension, PSIsContainer",
+      "notes": "Determine file type"
+    },
+    {
+      "bash": "sleep {seconds}",
+      "powershell": "Start-Sleep -Seconds {seconds}",
+      "notes": "Pause execution"
+    },
+    {
+      "bash": "exit {code}",
+      "powershell": "exit {code}",
+      "notes": "Exit with code"
+    },
+    {
+      "bash": "export {var}={value}",
+      "powershell": "$env:{var} = {value}",
+      "notes": "Export environment variable"
+    },
+    {
+      "bash": "env",
+      "powershell": "Get-ChildItem Env:",
+      "notes": "List environment variables"
+    },
+    {
+      "bash": "printenv {var}",
+      "powershell": "$env:{var}",
+      "notes": "Print environment variable"
     }
   ],
   "testExpressions": [
@@ -226,6 +321,76 @@
       "bash": "[[ -d {dir} ]]",
       "powershell": "(Test-Path {dir} -PathType Container)",
       "notes": "Extended test if directory exists"
+    },
+    {
+      "bash": "[[ -n {var} ]]",
+      "powershell": "({var} -ne '')",
+      "notes": "Extended test if string is non-empty"
+    },
+    {
+      "bash": "[[ -z {var} ]]",
+      "powershell": "([string]::IsNullOrEmpty({var}))",
+      "notes": "Extended test if string is empty/null"
+    },
+    {
+      "bash": "[[ {a} != {b} ]]",
+      "powershell": "({a} -ne {b})",
+      "notes": "String inequality (extended test)"
+    },
+    {
+      "bash": "[ {a} != {b} ]",
+      "powershell": "({a} -ne {b})",
+      "notes": "String inequality"
+    },
+    {
+      "bash": "[ {a} = {b} ]",
+      "powershell": "({a} -eq {b})",
+      "notes": "String equality (POSIX)"
+    },
+    {
+      "bash": "[ -r {file} ]",
+      "powershell": "(Test-Path {file})",
+      "notes": "Test if file is readable (simplified to exists)"
+    },
+    {
+      "bash": "[ -w {file} ]",
+      "powershell": "(Test-Path {file})",
+      "notes": "Test if file is writable (simplified to exists)"
+    },
+    {
+      "bash": "[ -x {file} ]",
+      "powershell": "(Test-Path {file})",
+      "notes": "Test if file is executable (simplified to exists)"
+    },
+    {
+      "bash": "[ -s {file} ]",
+      "powershell": "((Test-Path {file}) -and ((Get-Item {file}).Length -gt 0))",
+      "notes": "Test if file exists and is not empty"
+    },
+    {
+      "bash": "[ ! -f {file} ]",
+      "powershell": "(!(Test-Path {file} -PathType Leaf))",
+      "notes": "Test if file does NOT exist"
+    },
+    {
+      "bash": "[ ! -d {dir} ]",
+      "powershell": "(!(Test-Path {dir} -PathType Container))",
+      "notes": "Test if directory does NOT exist"
+    },
+    {
+      "bash": "[ -ge {a} {b} ]",
+      "powershell": "({a} -ge {b})",
+      "notes": "Numeric greater than or equal"
+    },
+    {
+      "bash": "[ -le {a} {b} ]",
+      "powershell": "({a} -le {b})",
+      "notes": "Numeric less than or equal"
+    },
+    {
+      "bash": "[ -ne {a} {b} ]",
+      "powershell": "({a} -ne {b})",
+      "notes": "Numeric not equal"
     }
   ]
 }
