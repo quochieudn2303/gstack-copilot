@@ -60,18 +60,19 @@ export function transformCommand(
     return { line: testMatch, transformed: true };
   }
 
-  // Try to match as a command
-  const cmdMatch = findCommandMapping(trimmed);
-  if (cmdMatch) {
-    return { line: cmdMatch.powershell, transformed: true };
-  }
-
-  // Handle piped commands
+  // Handle piped commands FIRST (before single command matching)
+  // This prevents the single command pattern from capturing the entire pipe
   if (trimmed.includes("|")) {
-    const pipedResult = transformPipedCommand(trimmed, options);
+    const pipedResult = transformPipedCommand(trimmed, { ...options, markUnknown });
     if (pipedResult.transformed) {
       return pipedResult;
     }
+  }
+
+  // Try to match as a single command (no pipes)
+  const cmdMatch = findCommandMapping(trimmed);
+  if (cmdMatch) {
+    return { line: cmdMatch.powershell, transformed: true };
   }
 
   // Check if it starts with a known command (partial match)
@@ -202,13 +203,14 @@ function tryPipeStageMapping(command: string): string | undefined {
     return pipeMappings[command];
   }
 
-  // Handle head -n N and tail -n N with variable N
-  const headMatch = /^head\s+(?:-n\s+)?(\d+)$/.exec(command);
+  // Handle head -n N, head -N, head N with variable N
+  const headMatch = /^head\s+(?:-n\s+|-)?(\d+)$/.exec(command);
   if (headMatch) {
     return `Select-Object -First ${headMatch[1]}`;
   }
 
-  const tailMatch = /^tail\s+(?:-n\s+)?(\d+)$/.exec(command);
+  // Handle tail -n N, tail -N, tail N with variable N
+  const tailMatch = /^tail\s+(?:-n\s+|-)?(\d+)$/.exec(command);
   if (tailMatch) {
     return `Select-Object -Last ${tailMatch[1]}`;
   }

@@ -5,10 +5,36 @@
  * See: .planning/phases/02-command-translation-layer/INVENTORY.md
  */
 
-import { createRequire } from "module";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-const require = createRequire(import.meta.url);
-const commandsJson = require("./commands.json") as CommandsRegistry;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load commands.json from the source directory (works in both dev and dist)
+function loadCommandsJson(): CommandsRegistry {
+  // Try multiple paths to handle different execution contexts
+  const possiblePaths = [
+    join(__dirname, "commands.json"), // When running from dist/
+    join(__dirname, "..", "..", "src", "mappings", "commands.json"), // When running from dist/ and JSON is in src/
+  ];
+
+  for (const path of possiblePaths) {
+    try {
+      const content = readFileSync(path, "utf-8");
+      return JSON.parse(content) as CommandsRegistry;
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error(
+    `Could not find commands.json in any of: ${possiblePaths.join(", ")}`
+  );
+}
+
+const commandsJson = loadCommandsJson();
 
 export interface CommandMapping {
   /** Bash command pattern with placeholders like {dir}, {file}, etc. */
