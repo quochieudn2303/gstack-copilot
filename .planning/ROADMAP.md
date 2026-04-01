@@ -11,7 +11,7 @@
 
 - [x] **Phase 1: Core Conversion Pipeline** - SKILL.md parser + path remapping + frontmatter transformer
 - [x] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
-- [ ] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
+- [x] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
 - [ ] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
 - [ ] **Phase 5: Browser Skills - /qa, /office-hours** - High-value browser-using skills
 - [ ] **Phase 6: Sprint Completion - /ship** - Complete sprint loop + setup + docs
@@ -57,7 +57,8 @@
   2. Skill can read files, suggest fixes, and apply auto-corrections
   3. Review follows gstack's quality patterns (PR hygiene, test coverage checks)
   4. No browser dependency — validates core infrastructure without browser complexity
-**Plans**: 03-01 Contract & Base Detection, 03-02 Review Skill Artifact, 03-03 Verification Harness & UAT
+**Plans**: 03-01 Contract & Base Detection, 03-02 Review Skill Artifact, 03-03 Verification Harness & UAT  
+**Completed**: 2026-04-02
 
 ---
 
@@ -108,7 +109,7 @@
 |-------|----------------|--------|-----------|
 | 1. Core Conversion Pipeline | 3/3 | Complete | 2026-03-30 |
 | 2. Command Translation Layer | 3/3 | Complete | 2026-04-02 |
-| 3. First Skill - /review | 0/3 | Planned | - |
+| 3. First Skill - /review | 3/3 | Complete | 2026-04-02 |
 | 4. Browser Abstraction | 0/? | Not started | - |
 | 5. Browser Skills - /qa, /office-hours | 0/? | Not started | - |
 | 6. Sprint Completion - /ship | 0/? | Not started | - |

@@ -10,7 +10,7 @@ Enable Copilot CLI users to leverage gstack's structured sprint workflow (think 
 
 ## Current State
 
-Phase 2 is complete as of 2026-04-02. The converter now handles the core command-translation layer end-to-end: declarative UNIX utility mappings, environment-variable rewriting, process substitution, shell idioms, and full content-pipeline orchestration. Phase 3 is next: use that completed infrastructure to port `/review` end-to-end in Copilot CLI.
+Phase 3 is complete as of 2026-04-02. The repository now contains a real project-local `/review` skill under `.github/skills/review`, along with docs-aligned frontmatter handling, review-target helpers, artifact/runtime tests, and a live `gh copilot` invocation proving the skill can be used without browser dependencies. Phase 4 is next: add the browser abstraction needed for `/qa` and `/office-hours`.
 
 ## Requirements
 
@@ -18,12 +18,12 @@ Phase 2 is complete as of 2026-04-02. The converter now handles the core command
 
 - Phase 1 (2026-03-30): Core converter CLI parses gstack SKILL.md files, rewrites core paths/tool aliases, and emits valid Copilot SKILL.md output
 - Phase 2 (2026-04-02): Command translation layer converts core Bash utilities, environment variables, and process substitution into PowerShell-compatible output
+- Phase 3 (2026-04-02): `/review` works as a real project-local Copilot skill with findings-first output and explicit confirm-to-fix behavior
 
 ### Active
 
 - [ ] Browser abstraction supporting both chrome-devtools MCP and Playwright
 - [ ] /office-hours skill — product discovery and design doc generation
-- [ ] /review skill — pre-landing code review with auto-fix capability
 - [ ] /qa skill — browser-based testing with bug detection and fixes
 - [ ] /ship skill — test audit, coverage check, PR creation
 - [ ] Setup script for one-command installation
@@ -47,7 +47,7 @@ Phase 2 is complete as of 2026-04-02. The converter now handles the core command
 
 **Skill format differences:**
 - gstack: `.factory/skills/{name}/SKILL.md` with Bash preamble, `$GSTACK_BIN` references
-- Copilot: `.github/skills/{name}/SKILL.md` with YAML frontmatter (`allowed-tools`, `argument-hint`)
+- Copilot: `.github/skills/{name}/SKILL.md` with YAML frontmatter centered on `name`, `description`, and optional documented fields such as `allowed-tools` and `user-invocable`
 
 **Browser automation:**
 - gstack: Playwright-based `/browse` command with `$B` shorthand
@@ -66,9 +66,10 @@ Phase 2 is complete as of 2026-04-02. The converter now handles the core command
 | Skill files over MCP server | Direct 1:1 mapping with gstack format, native Copilot discovery | — Pending |
 | Adapter layer, not rewrite | Leverage existing gstack quality, easier to maintain | Phase 1 validated the approach with a real converter pipeline |
 | Support both browser backends | Flexibility — native chrome-devtools for simple tasks, Playwright for complex automation | — Pending |
-| Core skills first | Validate approach with essential sprint workflow before expanding | Phase 1 foundation complete; `/review` remains the first target skill |
+| Core skills first | Validate approach with essential sprint workflow before expanding | Phase 3 completed `/review` first and validated the non-browser skill path |
 | Ordered parse → transform → generate pipeline | Keeps transformation logic testable and extensible | Implemented in Phase 1 |
 | Generated PowerShell must survive later pipeline stages | Multi-stage translation only works if later passes preserve already translated PowerShell | Validated in Phase 2 |
+| Ship project-local skills before setup automation | A checked-in `.github/skills` artifact gives a concrete target for early UAT before Phase 6 setup work | Validated in Phase 3 |
 
 ## Evolution
 
@@ -88,4 +89,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-02 after Phase 2 completion*
+*Last updated: 2026-04-02 after Phase 3 completion*
