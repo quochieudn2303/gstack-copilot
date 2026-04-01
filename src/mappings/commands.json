@@ -1,0 +1,231 @@
+{
+  "commands": [
+    {
+      "bash": "find {dir} -name {pattern}",
+      "powershell": "Get-ChildItem -Path {dir} -Filter {pattern} -Recurse",
+      "notes": "Basic find with name pattern"
+    },
+    {
+      "bash": "find {dir} -type f -name {pattern}",
+      "powershell": "Get-ChildItem -Path {dir} -Filter {pattern} -Recurse -File",
+      "notes": "Find files only with name pattern"
+    },
+    {
+      "bash": "find {dir} -type d -name {pattern}",
+      "powershell": "Get-ChildItem -Path {dir} -Filter {pattern} -Recurse -Directory",
+      "notes": "Find directories only with name pattern"
+    },
+    {
+      "bash": "find {dir} -mmin {minutes} -type f",
+      "powershell": "(Get-ChildItem -Path {dir} -Recurse -File | Where-Object { $_.LastWriteTime -gt (Get-Date).AddMinutes(-{minutes}) })",
+      "notes": "Find files modified within N minutes"
+    },
+    {
+      "bash": "grep {pattern} {file}",
+      "powershell": "Select-String -Pattern {pattern} -Path {file}",
+      "notes": "Basic grep"
+    },
+    {
+      "bash": "grep -q {pattern} {file}",
+      "powershell": "(Select-String -Pattern {pattern} -Path {file} -Quiet)",
+      "notes": "Quiet grep (returns boolean)"
+    },
+    {
+      "bash": "grep -qF {pattern} {file}",
+      "powershell": "(Select-String -Pattern {pattern} -Path {file} -SimpleMatch -Quiet)",
+      "notes": "Quiet fixed-string grep"
+    },
+    {
+      "bash": "grep -r {pattern} {dir}",
+      "powershell": "Get-ChildItem -Path {dir} -Recurse -File | Select-String -Pattern {pattern}",
+      "notes": "Recursive grep"
+    },
+    {
+      "bash": "date +%s",
+      "powershell": "[int][double]::Parse((Get-Date -UFormat %s))",
+      "notes": "Unix timestamp (seconds since epoch)"
+    },
+    {
+      "bash": "date -u +%Y-%m-%dT%H:%M:%SZ",
+      "powershell": "(Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')",
+      "notes": "ISO 8601 UTC timestamp"
+    },
+    {
+      "bash": "wc -l",
+      "powershell": "(Measure-Object -Line).Lines",
+      "notes": "Line count (pipe input)"
+    },
+    {
+      "bash": "wc -l {file}",
+      "powershell": "(Get-Content {file} | Measure-Object -Line).Lines",
+      "notes": "Line count for file"
+    },
+    {
+      "bash": "cat {file}",
+      "powershell": "Get-Content {file}",
+      "notes": "Read file content"
+    },
+    {
+      "bash": "mkdir -p {dir}",
+      "powershell": "New-Item -ItemType Directory -Path {dir} -Force | Out-Null",
+      "notes": "Create directory recursively"
+    },
+    {
+      "bash": "touch {file}",
+      "powershell": "New-Item -ItemType File -Path {file} -Force | Out-Null",
+      "notes": "Create empty file"
+    },
+    {
+      "bash": "rm -f {file}",
+      "powershell": "Remove-Item -Path {file} -Force -ErrorAction SilentlyContinue",
+      "notes": "Delete file silently"
+    },
+    {
+      "bash": "rm -rf {dir}",
+      "powershell": "Remove-Item -Path {dir} -Recurse -Force -ErrorAction SilentlyContinue",
+      "notes": "Delete directory recursively"
+    },
+    {
+      "bash": "echo {text}",
+      "powershell": "Write-Output {text}",
+      "notes": "Print text"
+    },
+    {
+      "bash": "basename {path}",
+      "powershell": "Split-Path -Leaf {path}",
+      "notes": "Get filename from path"
+    },
+    {
+      "bash": "dirname {path}",
+      "powershell": "Split-Path -Parent {path}",
+      "notes": "Get directory from path"
+    },
+    {
+      "bash": "head -n {num} {file}",
+      "powershell": "Get-Content {file} -Head {num}",
+      "notes": "First N lines of file"
+    },
+    {
+      "bash": "tail -n {num} {file}",
+      "powershell": "Get-Content {file} -Tail {num}",
+      "notes": "Last N lines of file"
+    },
+    {
+      "bash": "tr -d {chars}",
+      "powershell": "-replace '{chars}', ''",
+      "notes": "Delete characters (pipe input)"
+    },
+    {
+      "bash": "sort",
+      "powershell": "Sort-Object",
+      "notes": "Sort lines (pipe input)"
+    },
+    {
+      "bash": "sort -u",
+      "powershell": "Sort-Object -Unique",
+      "notes": "Sort and deduplicate (pipe input)"
+    },
+    {
+      "bash": "uniq",
+      "powershell": "Get-Unique",
+      "notes": "Filter unique lines (pipe input, must be sorted)"
+    },
+    {
+      "bash": "true",
+      "powershell": "$true",
+      "notes": "No-op success / true value"
+    },
+    {
+      "bash": "ls -la {dir}",
+      "powershell": "Get-ChildItem -Path {dir} -Force",
+      "notes": "List all files including hidden"
+    },
+    {
+      "bash": "ls -la",
+      "powershell": "Get-ChildItem -Force",
+      "notes": "List all files in current dir including hidden"
+    },
+    {
+      "bash": "cp {src} {dest}",
+      "powershell": "Copy-Item -Path {src} -Destination {dest}",
+      "notes": "Copy file"
+    },
+    {
+      "bash": "cp -r {src} {dest}",
+      "powershell": "Copy-Item -Path {src} -Destination {dest} -Recurse",
+      "notes": "Copy directory recursively"
+    },
+    {
+      "bash": "mv {src} {dest}",
+      "powershell": "Move-Item -Path {src} -Destination {dest}",
+      "notes": "Move/rename file or directory"
+    },
+    {
+      "bash": "pwd",
+      "powershell": "Get-Location",
+      "notes": "Print working directory"
+    },
+    {
+      "bash": "cd {dir}",
+      "powershell": "Set-Location {dir}",
+      "notes": "Change directory"
+    }
+  ],
+  "testExpressions": [
+    {
+      "bash": "[ -f {file} ]",
+      "powershell": "(Test-Path {file} -PathType Leaf)",
+      "notes": "Test if file exists"
+    },
+    {
+      "bash": "[ -d {dir} ]",
+      "powershell": "(Test-Path {dir} -PathType Container)",
+      "notes": "Test if directory exists"
+    },
+    {
+      "bash": "[ -e {path} ]",
+      "powershell": "(Test-Path {path})",
+      "notes": "Test if path exists"
+    },
+    {
+      "bash": "[ -n {var} ]",
+      "powershell": "({var} -ne '')",
+      "notes": "Test if string is non-empty"
+    },
+    {
+      "bash": "[ -z {var} ]",
+      "powershell": "([string]::IsNullOrEmpty({var}))",
+      "notes": "Test if string is empty/null"
+    },
+    {
+      "bash": "[ {a} -gt {b} ]",
+      "powershell": "({a} -gt {b})",
+      "notes": "Numeric greater than"
+    },
+    {
+      "bash": "[ {a} -lt {b} ]",
+      "powershell": "({a} -lt {b})",
+      "notes": "Numeric less than"
+    },
+    {
+      "bash": "[ {a} -eq {b} ]",
+      "powershell": "({a} -eq {b})",
+      "notes": "Numeric equal"
+    },
+    {
+      "bash": "[[ {a} == {b} ]]",
+      "powershell": "({a} -eq {b})",
+      "notes": "String equality (extended test)"
+    },
+    {
+      "bash": "[[ -f {file} ]]",
+      "powershell": "(Test-Path {file} -PathType Leaf)",
+      "notes": "Extended test if file exists"
+    },
+    {
+      "bash": "[[ -d {dir} ]]",
+      "powershell": "(Test-Path {dir} -PathType Container)",
+      "notes": "Extended test if directory exists"
+    }
+  ]
+}
