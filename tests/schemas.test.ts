@@ -67,6 +67,20 @@ describe("CopilotFrontmatter", () => {
     expect(result["allowed-tools"]).toContain("Task");
   });
 
+  it("parses docs-aligned optional fields without argument-hint", () => {
+    const result = CopilotFrontmatter.parse({
+      name: "review",
+      description: "Review branch changes",
+      "allowed-tools": "Read, Edit, Task",
+      "user-invocable": true,
+      "disable-model-invocation": false,
+    });
+
+    expect(result["user-invocable"]).toBe(true);
+    expect(result["disable-model-invocation"]).toBe(false);
+    expect(result["argument-hint"]).toBeUndefined();
+  });
+
   it("rejects non-string allowed-tools", () => {
     expect(() =>
       CopilotFrontmatter.parse({

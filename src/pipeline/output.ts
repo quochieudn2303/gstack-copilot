@@ -11,12 +11,27 @@ export function generateOutput(
   content: string,
   options: OutputOptions = {},
 ): string {
-  const orderedFrontmatter: CopilotFrontmatter = {
+  const orderedFrontmatter: Record<string, unknown> = {
     name: frontmatter.name,
     description: frontmatter.description,
-    "argument-hint": frontmatter["argument-hint"],
-    "allowed-tools": frontmatter["allowed-tools"],
   };
+
+  if (typeof frontmatter["user-invocable"] === "boolean") {
+    orderedFrontmatter["user-invocable"] = frontmatter["user-invocable"];
+  }
+
+  if (typeof frontmatter["disable-model-invocation"] === "boolean") {
+    orderedFrontmatter["disable-model-invocation"] =
+      frontmatter["disable-model-invocation"];
+  }
+
+  if (frontmatter["argument-hint"]) {
+    orderedFrontmatter["argument-hint"] = frontmatter["argument-hint"];
+  }
+
+  if (frontmatter["allowed-tools"]) {
+    orderedFrontmatter["allowed-tools"] = frontmatter["allowed-tools"];
+  }
 
   const yamlStr = stringify(orderedFrontmatter, {
     lineWidth: 0,
