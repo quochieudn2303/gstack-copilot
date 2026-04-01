@@ -36,6 +36,8 @@ describe("checked-in review skill artifact", () => {
 
     expect(parsed.data.name).toBe("review");
     expect(parsed.data["user-invocable"]).toBe(true);
+    expect(parsed.data["allowed-tools"]).toContain("Task");
+    expect(parsed.data["allowed-tools"]).not.toContain("Agent");
     expect(parsed.content).toContain("## Findings First");
     expect(parsed.content).toContain("## Fix Mode");
     expect(parsed.content).toContain("Do not include uncommitted working-tree changes unless the user explicitly asks for that mode.");
@@ -48,5 +50,7 @@ describe("checked-in review skill artifact", () => {
     );
 
     expect(readme).toBe(buildReviewReadme());
+    expect(readme).toContain("Use `/review [base-branch]` inside GitHub Copilot CLI.");
+    expect(readme).toContain("Verification focus for Phase 3:");
   });
 });

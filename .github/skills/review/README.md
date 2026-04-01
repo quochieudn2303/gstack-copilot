@@ -9,3 +9,4 @@ Verification focus for Phase 3:
 - findings are shown before any fix step
 - fix mode requires explicit confirmation
 - uncommitted working-tree changes are opt-in
+- the checked-in artifact should match the builder output exactly

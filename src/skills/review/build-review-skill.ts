@@ -7,6 +7,15 @@ import { transformContent } from "../../pipeline/content.js";
 
 export const REVIEW_SKILL_SELF_REFERENCE = ".github/skills/review/SKILL.md";
 
+/**
+ * Maintained source of truth for the checked-in `/review` skill artifact.
+ *
+ * Phase 3 keeps `.github/skills/review/SKILL.md` checked into the repository,
+ * but the artifact should stay byte-for-byte aligned with this builder output.
+ * Tests enforce that relationship so later updates change the generator and the
+ * checked-in artifact together.
+ */
+
 function buildReviewBehaviorSections(): string {
   return [
     "## Review Target",
@@ -84,6 +93,7 @@ export function buildReviewReadme(): string {
     "- findings are shown before any fix step",
     "- fix mode requires explicit confirmation",
     "- uncommitted working-tree changes are opt-in",
+    "- the checked-in artifact should match the builder output exactly",
   ].join("\n")}\n`;
 }
 
