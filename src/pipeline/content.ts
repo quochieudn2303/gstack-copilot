@@ -1,4 +1,5 @@
 import { transformPath } from "../mappings/paths.js";
+import { transformEnvVarsStage } from "./transforms/envvars.js";
 import { ConversionError } from "./parse.js";
 
 const COPILOT_PREAMBLE = `## Initialization
@@ -41,6 +42,15 @@ function assertSupportedContent(content: string, filepath?: string): void {
 export function transformContent(content: string, filepath?: string): string {
   assertSupportedContent(content, filepath);
 
-  const replacedPreamble = content.replace(PREAMBLE_PATTERN, COPILOT_PREAMBLE);
-  return transformPath(replacedPreamble);
+  // Transform pipeline:
+  // 1. Replace gstack preamble with Copilot initialization
+  let result = content.replace(PREAMBLE_PATTERN, COPILOT_PREAMBLE);
+
+  // 2. Transform paths (gstack -> gstack-copilot paths)
+  result = transformPath(result);
+
+  // 3. Transform environment variables (Bash -> PowerShell syntax)
+  result = transformEnvVarsStage(result);
+
+  return result;
 }
