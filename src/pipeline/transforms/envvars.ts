@@ -9,7 +9,7 @@ import {
   transformEnvVars,
   transformKnownEnvVars,
   transformUnknownEnvVars,
-} from "../mappings/envvars.js";
+} from "../../mappings/envvars.js";
 
 /**
  * Options for the environment variable transform
@@ -73,12 +73,33 @@ export function transformEnvVarsStage(
  * Useful for determining if the transform is needed.
  *
  * @param content - Content to check
- * @returns true if content contains $VAR or ${VAR} patterns
+ * @returns true if content contains $VAR or ${VAR} patterns that need transformation
  */
 export function containsBashEnvVars(content: string): boolean {
-  // Match $VAR or ${VAR} patterns (not already $env:)
-  const pattern = /(?<!\\)(?<!\$env:)\$(?:\{[A-Za-z_][A-Za-z0-9_]*\}|[A-Za-z_][A-Za-z0-9_]*)/;
-  return pattern.test(content);
+  // Match $VAR or ${VAR} patterns that are NOT:
+  // - Escaped (\$VAR)
+  // - Already PowerShell $env: syntax
+  // - Part of $env: prefix
+
+  // Match ${VAR} brace syntax (not escaped)
+  const bracePattern = /(?<!\\)\$\{[A-Za-z_][A-Za-z0-9_]*\}/;
+  if (bracePattern.test(content)) return true;
+
+  // Match $VAR simple syntax
+  // - Not escaped
+  // - Not after : (like $env:VAR)
+  // - Not followed by : (like $env:)
+  const simplePattern = /(?<!\\)(?<!:)\$([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_:])/g;
+  let match;
+  while ((match = simplePattern.exec(content)) !== null) {
+    const varName = match[1];
+    // Skip PWD (same in PowerShell) and env (PowerShell prefix)
+    if (varName !== "PWD" && varName !== "env") {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**

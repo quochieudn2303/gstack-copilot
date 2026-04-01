@@ -31,7 +31,8 @@ Continue here.`;
     const result = transformContent(content);
 
     expect(result).toContain("## Initialization");
-    expect(result).toContain("$GSTACK_COPILOT_ROOT");
+    // The env var transform converts $GSTACK_COPILOT_ROOT to $env:GSTACK_COPILOT_ROOT
+    expect(result).toContain("$env:GSTACK_COPILOT_ROOT");
     expect(result).not.toContain("## Preamble (run first)");
   });
 

@@ -115,28 +115,28 @@ export function transformKnownEnvVars(content: string): string {
  * @returns Content with unknown vars converted to $env:VAR format
  */
 export function transformUnknownEnvVars(content: string): string {
-  // Match $VAR or ${VAR} patterns that aren't already $env: or $PWD
-  // Negative lookbehind for \ (escaped) and $env: (already PowerShell)
-  // Negative lookahead for already being env: prefix
-
-  // Pattern for ${VAR} brace syntax
-  const bracePattern = /(?<!\\)\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g;
-
-  // Pattern for $VAR simple syntax (not already $env:)
-  // Must not be followed by more word characters (word boundary)
-  const simplePattern =
-    /(?<!\\)(?<!\$env:)\$([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_])/g;
-
   let result = content;
+
+  // Pattern for ${VAR} brace syntax - not escaped
+  const bracePattern = /(?<!\\)\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g;
 
   // Transform brace syntax first: ${VAR} -> $env:VAR
   result = result.replace(bracePattern, (_match, varName) => {
     // Skip if it's PWD (same in PowerShell)
     if (varName === "PWD") return `$${varName}`;
-    // Skip if already looks like PowerShell
+    // Skip if already looks like PowerShell (env:*)
     if (varName.startsWith("env:")) return `$${varName}`;
     return `$env:${varName}`;
   });
+
+  // Pattern for $VAR simple syntax
+  // Use negative lookbehind for:
+  // - \ (escaped)
+  // - : (already part of $env:VAR - the VAR part)
+  // Use negative lookahead for:
+  // - : (already PowerShell $env: syntax)
+  // - More word characters (word boundary)
+  const simplePattern = /(?<!\\)(?<!:)\$([A-Za-z_][A-Za-z0-9_]*)(?![A-Za-z0-9_:])/g;
 
   // Transform simple syntax: $VAR -> $env:VAR
   result = result.replace(simplePattern, (_match, varName) => {
@@ -144,8 +144,10 @@ export function transformUnknownEnvVars(content: string): string {
     if (varName === "PWD") return `$${varName}`;
     // Skip special positional/numeric vars
     if (/^\d+$/.test(varName)) return `$${varName}`;
-    // Skip if already PowerShell syntax
+    // Skip if already PowerShell syntax (env:*)
     if (varName.startsWith("env:")) return `$${varName}`;
+    // Skip the PowerShell "env" prefix itself (it's followed by :)
+    if (varName === "env") return `$${varName}`;
     return `$env:${varName}`;
   });
 
