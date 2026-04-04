@@ -12,7 +12,7 @@
 - [x] **Phase 1: Core Conversion Pipeline** - SKILL.md parser + path remapping + frontmatter transformer
 - [x] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
 - [x] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
-- [ ] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
+- [x] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
 - [ ] **Phase 5: Browser Skills - /qa, /office-hours** - High-value browser-using skills
 - [ ] **Phase 6: Sprint Completion - /ship** - Complete sprint loop + setup + docs
 
@@ -71,7 +71,8 @@
   2. ChromeDevToolsBackend maps gstack `$B` commands to `chrome-devtools-*` MCP tools
   3. Unsupported commands (`$B snapshot -D`, responsive) are documented with fallback guidance
   4. Simple browser flow (navigate → click → fill → verify) works end-to-end
-**Plans**: TBD
+**Plans**: 04-01 Adapter Contract & Fallbacks, 04-02 Chrome DevTools Backend, 04-03 Deterministic Flow & Verification
+**Completed**: 2026-04-02
 
 ---
 
@@ -110,7 +111,7 @@
 | 1. Core Conversion Pipeline | 3/3 | Complete | 2026-03-30 |
 | 2. Command Translation Layer | 3/3 | Complete | 2026-04-02 |
 | 3. First Skill - /review | 3/3 | Complete | 2026-04-02 |
-| 4. Browser Abstraction | 0/? | Not started | - |
+| 4. Browser Abstraction | 3/3 | Complete | 2026-04-02 |
 | 5. Browser Skills - /qa, /office-hours | 0/? | Not started | - |
 | 6. Sprint Completion - /ship | 0/? | Not started | - |
 

@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. The repository now includes a working Phase 1 converter CLI that transforms gstack `SKILL.md` files into Copilot-compatible skills, rewrites core paths, and emits valid Copilot frontmatter. The remaining phases extend that core into full shell translation, browser abstraction, and the first shipped skills: /office-hours, /review, /qa, /ship.
+A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. The repository now includes a working converter CLI, Bash-to-PowerShell translation layer, a shipped project-local `/review` skill, and a reusable browser abstraction with a Chrome DevTools backend. The remaining phases extend that base into the browser-heavy skills `/office-hours` and `/qa`, followed by `/ship` and setup/docs completion.
 
 ## Core Value
 
@@ -10,7 +10,7 @@ Enable Copilot CLI users to leverage gstack's structured sprint workflow (think 
 
 ## Current State
 
-Phase 3 is complete as of 2026-04-02. The repository now contains a real project-local `/review` skill under `.github/skills/review`, along with docs-aligned frontmatter handling, review-target helpers, artifact/runtime tests, and a live `gh copilot` invocation proving the skill can be used without browser dependencies. Phase 4 is next: add the browser abstraction needed for `/qa` and `/office-hours`.
+Phase 4 is complete as of 2026-04-02. The repository now contains a reusable browser runtime under `src/runtime/browser`, a Chrome DevTools mapping/backend layer, deterministic browser-flow fixtures and tests, and a live Chrome DevTools UAT run proving the browser foundation needed for `/qa` and `/office-hours`. Phase 5 is next: port the first browser-heavy skills on top of that backend.
 
 ## Requirements
 
@@ -19,10 +19,10 @@ Phase 3 is complete as of 2026-04-02. The repository now contains a real project
 - Phase 1 (2026-03-30): Core converter CLI parses gstack SKILL.md files, rewrites core paths/tool aliases, and emits valid Copilot SKILL.md output
 - Phase 2 (2026-04-02): Command translation layer converts core Bash utilities, environment variables, and process substitution into PowerShell-compatible output
 - Phase 3 (2026-04-02): `/review` works as a real project-local Copilot skill with findings-first output and explicit confirm-to-fix behavior
+- Phase 4 (2026-04-02): Browser abstraction ships with a Chrome DevTools backend, capability-gated QA surface, structured fallback guidance, and deterministic/live verification
 
 ### Active
 
-- [ ] Browser abstraction supporting both chrome-devtools MCP and Playwright
 - [ ] /office-hours skill — product discovery and design doc generation
 - [ ] /qa skill — browser-based testing with bug detection and fixes
 - [ ] /ship skill — test audit, coverage check, PR creation
@@ -70,6 +70,8 @@ Phase 3 is complete as of 2026-04-02. The repository now contains a real project
 | Ordered parse → transform → generate pipeline | Keeps transformation logic testable and extensible | Implemented in Phase 1 |
 | Generated PowerShell must survive later pipeline stages | Multi-stage translation only works if later passes preserve already translated PowerShell | Validated in Phase 2 |
 | Ship project-local skills before setup automation | A checked-in `.github/skills` artifact gives a concrete target for early UAT before Phase 6 setup work | Validated in Phase 3 |
+| Core browser interface plus capability extensions | Keeps Chrome DevTools first while preserving a future Playwright-compatible calling surface | Validated in Phase 4 |
+| Structured fallback guidance for unsupported browser actions | Browser API coverage is partial; unsupported work must degrade explicitly rather than silently | Validated in Phase 4 |
 
 ## Evolution
 
@@ -89,4 +91,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-02 after Phase 3 completion*
+*Last updated: 2026-04-02 after Phase 4 completion*

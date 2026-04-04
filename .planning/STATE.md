@@ -3,19 +3,19 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: ready_to_discuss
-last_updated: "2026-04-02T01:47:40+07:00"
+last_updated: "2026-04-02T23:54:26+07:00"
 progress:
   total_phases: 6
-  completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
-  percent: 50
+  completed_phases: 4
+  total_plans: 12
+  completed_plans: 12
+  percent: 67
 ---
 
 # STATE: gstack-copilot
 
 **Last Updated:** 2026-04-02  
-**Session:** Phase 3 executed and verified
+**Session:** Phase 4 executed
 
 ---
 
@@ -23,20 +23,20 @@ progress:
 
 **Core Value:** Enable Copilot CLI users to leverage gstack's structured sprint workflow (think → plan → build → review → test → ship) — the same process that powers 10-20K LOC/day productivity.
 
-**Current Focus:** Phase 4 is ready for discussion — add the browser abstraction needed for browser-based skills.
+**Current Focus:** Phase 4 is complete and the browser-skill ports are ready for discussion.
 
 ---
 
 ## Current Position
 
 ```
-Phase: 4 of 6 (Browser Abstraction)
+Phase: 5 of 6 (Browser Skills - /qa, /office-hours)
 Plan: Not started
-Status: Phase 3 complete, Phase 4 ready for discussion
-Progress: █████████░░░░░░░░░ 50%
+Status: Phase 4 complete, ready to discuss Phase 5
+Progress: █████████████░░░░░ 67%
 ```
 
-**Next Action:** `/gsd-discuss-phase 4` to define the browser abstraction behavior and boundaries
+**Next Action:** `/gsd-discuss-phase 5` to define `/qa` and `/office-hours` on top of the browser abstraction
 
 ---
 
@@ -47,7 +47,7 @@ Progress: █████████░░░░░░░░░ 50%
 | 1. Core Conversion Pipeline | Complete | 3 executed, verified |
 | 2. Command Translation Layer | Complete | 3 executed, verified |
 | 3. First Skill - /review | Complete | 3 executed, verified |
-| 4. Browser Abstraction | Not started | TBD |
+| 4. Browser Abstraction | Complete | 3 executed, verified |
 | 5. Browser Skills - /qa, /office-hours | Not started | TBD |
 | 6. Sprint Completion - /ship | Not started | TBD |
 
@@ -57,10 +57,10 @@ Progress: █████████░░░░░░░░░ 50%
 
 | Metric | Value |
 |--------|-------|
-| Plans Completed | 9 |
-| Phases Completed | 3/6 |
-| Requirements Covered | 9/17 |
-| Sessions | 5 |
+| Plans Completed | 12 |
+| Phases Completed | 4/6 |
+| Requirements Covered | 12/17 |
+| Sessions | 7 |
 
 ---
 
@@ -90,6 +90,8 @@ Progress: █████████░░░░░░░░░ 50%
 - **Current converter scope:** Phase 3 proved the adapter can ship a real Copilot skill artifact and invoke it through `gh copilot`
 - **Large skills:** office-hours is 70KB — test token limits early
 - **Browser gaps:** `$B snapshot -D`, responsive testing not supported in chrome-devtools
+- **Phase 4 execution shape:** Keep a required browser core with capability-gated extensions and structured fallback guidance
+- **Phase 4 output:** `src/runtime/browser/` now contains the reusable adapter, capability model, fallback policy, and Chrome DevTools backend for later browser skills
 
 ### Open Questions
 
@@ -119,12 +121,17 @@ Progress: █████████░░░░░░░░░ 50%
 - Implemented and verified a real `.github/skills/review/SKILL.md` artifact
 - Ran a live `gh copilot` `/review` invocation successfully
 - Wrote Phase 3 summaries, UAT, validation, and verification artifacts
+- Captured Phase 4 context for adapter shape, browser surface, and fallback behavior
+- Wrote Phase 4 research, validation, and 3 execution plans for the browser abstraction
+- Executed all three Phase 4 plans inline and added the browser adapter, capabilities, fallback model, Chrome DevTools backend, and integration coverage
+- Ran a live Chrome DevTools pass against the deterministic fixture over local HTTP and recorded the results in `04-UAT.md`
+- Wrote Phase 4 summaries, validation updates, UAT, and final verification artifacts
 
 ### For Next Session
 
-- Run `/gsd-discuss-phase 4` to capture browser abstraction decisions before planning
-- Then run `/gsd-plan-phase 4` once browser backend decisions are locked
-- Reference the completed `/review` artifact and Phase 3 verification as the non-browser baseline
+- Run `/gsd-discuss-phase 5` to define `/qa` and `/office-hours` on top of the new browser backend
+- Use `src/runtime/browser/` plus `tests/fixtures/browser-flow/page.html` as the Phase 4 browser foundation
+- Reuse `04-UAT.md` and `04-VERIFICATION.md` as the acceptance baseline for later browser-skill phases
 
 ---
 
@@ -166,3 +173,31 @@ Progress: █████████░░░░░░░░░ 50%
 | .planning/phases/03-first-skill-review/03-UAT.md | Created |
 | .planning/phases/03-first-skill-review/03-VERIFICATION.md | Created |
 | .github/skills/review/SKILL.md | Created |
+| .planning/phases/04-browser-abstraction/04-CONTEXT.md | Created |
+| .planning/phases/04-browser-abstraction/04-DISCUSSION-LOG.md | Created |
+| .planning/phases/04-browser-abstraction/04-RESEARCH.md | Created |
+| .planning/phases/04-browser-abstraction/04-VALIDATION.md | Created |
+| .planning/phases/04-browser-abstraction/04-01-PLAN.md | Created |
+| .planning/phases/04-browser-abstraction/04-02-PLAN.md | Created |
+| .planning/phases/04-browser-abstraction/04-03-PLAN.md | Created |
+| .planning/ROADMAP.md | Modified |
+| src/runtime/browser/adapter.ts | Created |
+| src/runtime/browser/capabilities.ts | Created |
+| src/runtime/browser/fallbacks.ts | Created |
+| src/runtime/browser/chrome-devtools-mapping.ts | Created |
+| src/runtime/browser/chrome-devtools-backend.ts | Created |
+| tests/runtime/browser-adapter.test.ts | Created |
+| tests/runtime/browser-capabilities.test.ts | Created |
+| tests/runtime/browser-fallbacks.test.ts | Created |
+| tests/runtime/browser-chrome-devtools.test.ts | Created |
+| tests/integration/browser-command-mapping.test.ts | Created |
+| tests/fixtures/browser-flow/page.html | Created |
+| tests/integration/browser-flow.test.ts | Created |
+| tests/integration/browser-fallbacks.test.ts | Created |
+| .planning/phases/04-browser-abstraction/04-01-SUMMARY.md | Created |
+| .planning/phases/04-browser-abstraction/04-02-SUMMARY.md | Created |
+| .planning/phases/04-browser-abstraction/04-03-SUMMARY.md | Created |
+| .planning/phases/04-browser-abstraction/04-UAT.md | Created |
+| .planning/phases/04-browser-abstraction/04-VERIFICATION.md | Created |
+| .planning/REQUIREMENTS.md | Modified |
+| .planning/PROJECT.md | Modified |

@@ -97,9 +97,9 @@
 | TOOL-03 | Phase 2 | Complete (2026-04-02) |
 | TOOL-04 | Phase 2 | Complete (2026-04-02) |
 | SKILL-01 | Phase 3 | Complete (2026-04-02) |
-| BROWSE-01 | Phase 4 | Pending |
-| BROWSE-02 | Phase 4 | Pending |
-| BROWSE-03 | Phase 4 | Pending |
+| BROWSE-01 | Phase 4 | Complete (2026-04-02) |
+| BROWSE-02 | Phase 4 | Complete (2026-04-02) |
+| BROWSE-03 | Phase 4 | Complete (2026-04-02) |
 | SKILL-02 | Phase 5 | Pending |
 | SKILL-03 | Phase 5 | Pending |
 | SKILL-04 | Phase 6 | Pending |
