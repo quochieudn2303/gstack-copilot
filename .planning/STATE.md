@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_to_discuss
-last_updated: "2026-04-02T23:54:26+07:00"
+status: ready_to_plan
+last_updated: "2026-04-05T01:45:00+07:00"
 progress:
   total_phases: 6
   completed_phases: 4
@@ -15,7 +15,7 @@ progress:
 # STATE: gstack-copilot
 
 **Last Updated:** 2026-04-02  
-**Session:** Phase 4 executed
+**Session:** Phase 5 context gathered
 
 ---
 
@@ -23,7 +23,7 @@ progress:
 
 **Core Value:** Enable Copilot CLI users to leverage gstack's structured sprint workflow (think → plan → build → review → test → ship) — the same process that powers 10-20K LOC/day productivity.
 
-**Current Focus:** Phase 4 is complete and the browser-skill ports are ready for discussion.
+**Current Focus:** Phase 5 context is captured and the browser-skill ports are ready for planning.
 
 ---
 
@@ -32,11 +32,11 @@ progress:
 ```
 Phase: 5 of 6 (Browser Skills - /qa, /office-hours)
 Plan: Not started
-Status: Phase 4 complete, ready to discuss Phase 5
+Status: Phase 5 context captured, ready to plan
 Progress: █████████████░░░░░ 67%
 ```
 
-**Next Action:** `/gsd-discuss-phase 5` to define `/qa` and `/office-hours` on top of the browser abstraction
+**Next Action:** `/gsd-plan-phase 5` to create executable plans for `/qa` and `/office-hours`
 
 ---
 
@@ -92,6 +92,7 @@ Progress: █████████████░░░░░ 67%
 - **Browser gaps:** `$B snapshot -D`, responsive testing not supported in chrome-devtools
 - **Phase 4 execution shape:** Keep a required browser core with capability-gated extensions and structured fallback guidance
 - **Phase 4 output:** `src/runtime/browser/` now contains the reusable adapter, capability model, fallback policy, and Chrome DevTools backend for later browser skills
+- **Phase 5 contract:** `/qa` is guided-flow, findings-first, confirm-before-fix; `/office-hours` is browser-grounded feedback plus a structured memo
 
 ### Open Questions
 
@@ -126,12 +127,13 @@ Progress: █████████████░░░░░ 67%
 - Executed all three Phase 4 plans inline and added the browser adapter, capabilities, fallback model, Chrome DevTools backend, and integration coverage
 - Ran a live Chrome DevTools pass against the deterministic fixture over local HTTP and recorded the results in `04-UAT.md`
 - Wrote Phase 4 summaries, validation updates, UAT, and final verification artifacts
+- Captured Phase 5 context for `/qa` operating mode, QA evidence contract, and `/office-hours` output shape
 
 ### For Next Session
 
-- Run `/gsd-discuss-phase 5` to define `/qa` and `/office-hours` on top of the new browser backend
+- Run `/gsd-plan-phase 5` to break `/qa` and `/office-hours` into executable plans
 - Use `src/runtime/browser/` plus `tests/fixtures/browser-flow/page.html` as the Phase 4 browser foundation
-- Reuse `04-UAT.md` and `04-VERIFICATION.md` as the acceptance baseline for later browser-skill phases
+- Reuse `05-CONTEXT.md` as the authority on `/qa` guided-flow QA behavior and `/office-hours` memo contract
 
 ---
 
@@ -201,3 +203,5 @@ Progress: █████████████░░░░░ 67%
 | .planning/phases/04-browser-abstraction/04-VERIFICATION.md | Created |
 | .planning/REQUIREMENTS.md | Modified |
 | .planning/PROJECT.md | Modified |
+| .planning/phases/05-browser-skills-qa-office-hours/05-CONTEXT.md | Created |
+| .planning/phases/05-browser-skills-qa-office-hours/05-DISCUSSION-LOG.md | Created |
