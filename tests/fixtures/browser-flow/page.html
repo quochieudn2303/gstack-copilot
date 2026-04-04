@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link rel="icon" href="data:," />
+    <title>Browser Flow Fixture</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        background: linear-gradient(180deg, #f6f8fb 0%, #eef4ff 100%);
+        color: #10233c;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 18px 40px rgba(16, 35, 60, 0.12);
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      label {
+        font-weight: 600;
+      }
+
+      input,
+      button {
+        font: inherit;
+      }
+
+      input {
+        padding: 10px 12px;
+        border: 1px solid #aac2e6;
+        border-radius: 10px;
+      }
+
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 999px;
+        background: #0a5bd9;
+        color: white;
+        cursor: pointer;
+      }
+
+      .surface {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 12px;
+        background: #eef4ff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Browser Flow Fixture</h1>
+      <p id="status">Idle</p>
+
+      <button id="open-form" type="button">
+        Open feedback form
+      </button>
+
+      <form id="feedback-form">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="name@example.test"
+        />
+
+        <button id="submit-feedback" type="button">
+          Submit feedback
+        </button>
+      </form>
+
+      <section class="surface" aria-label="Preview">
+        <strong>Result</strong>
+        <p id="result">Pending</p>
+      </section>
+    </main>
+
+    <script>
+      const status = document.getElementById("status");
+      const email = document.getElementById("email");
+      const openForm = document.getElementById("open-form");
+      const submit = document.getElementById("submit-feedback");
+      const result = document.getElementById("result");
+
+      console.log("fixture-ready");
+
+      openForm.addEventListener("click", () => {
+        status.textContent = "Form opened";
+        console.log("form-opened");
+      });
+
+      submit.addEventListener("click", async () => {
+        status.textContent = "Submitted";
+        result.textContent = `Submitted: ${email.value || "missing"}`;
+        console.log("form-submitted");
+
+        try {
+          await fetch("./page.html?submitted=1", { method: "GET" });
+        } catch (error) {
+          console.warn("network-check-failed", error);
+        }
+      });
+    </script>
+  </body>
+</html>
