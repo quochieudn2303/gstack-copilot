@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. The repository now includes a working converter CLI, Bash-to-PowerShell translation layer, a shipped project-local `/review` skill, and a reusable browser abstraction with a Chrome DevTools backend. The remaining phases extend that base into the browser-heavy skills `/office-hours` and `/qa`, followed by `/ship` and setup/docs completion.
+A Copilot CLI port of gstack — an adapter layer that makes gstack's "virtual engineering team" skills work with GitHub Copilot CLI. The repository now includes a working converter CLI, Bash-to-PowerShell translation layer, a shipped project-local `/review` skill, a reusable browser abstraction with a Chrome DevTools backend, and checked-in browser-heavy `/qa` and `/office-hours` skills. The remaining phase completes `/ship` plus setup/docs completion.
 
 ## Core Value
 
@@ -10,7 +10,7 @@ Enable Copilot CLI users to leverage gstack's structured sprint workflow (think 
 
 ## Current State
 
-Phase 4 is complete as of 2026-04-02. The repository now contains a reusable browser runtime under `src/runtime/browser`, a Chrome DevTools mapping/backend layer, deterministic browser-flow fixtures and tests, and a live Chrome DevTools UAT run proving the browser foundation needed for `/qa` and `/office-hours`. Phase 5 is next: port the first browser-heavy skills on top of that backend.
+Phase 5 is complete as of 2026-04-05. The repository now contains checked-in `/qa` and `/office-hours` skills, runtime contracts for QA reports and office-hours memos, deterministic browser-backed verification, and live browser UAT proving the browser-skill layer on top of the Phase 4 backend. Phase 6 is next: complete `/ship`, setup, and sprint-loop documentation.
 
 ## Requirements
 
@@ -20,11 +20,10 @@ Phase 4 is complete as of 2026-04-02. The repository now contains a reusable bro
 - Phase 2 (2026-04-02): Command translation layer converts core Bash utilities, environment variables, and process substitution into PowerShell-compatible output
 - Phase 3 (2026-04-02): `/review` works as a real project-local Copilot skill with findings-first output and explicit confirm-to-fix behavior
 - Phase 4 (2026-04-02): Browser abstraction ships with a Chrome DevTools backend, capability-gated QA surface, structured fallback guidance, and deterministic/live verification
+- Phase 5 (2026-04-05): `/qa` and `/office-hours` ship as checked-in browser-heavy skills with runtime contracts, deterministic verification, and live browser UAT
 
 ### Active
 
-- [ ] /office-hours skill — product discovery and design doc generation
-- [ ] /qa skill — browser-based testing with bug detection and fixes
 - [ ] /ship skill — test audit, coverage check, PR creation
 - [ ] Setup script for one-command installation
 - [ ] Documentation for Copilot CLI users
@@ -72,6 +71,7 @@ Phase 4 is complete as of 2026-04-02. The repository now contains a reusable bro
 | Ship project-local skills before setup automation | A checked-in `.github/skills` artifact gives a concrete target for early UAT before Phase 6 setup work | Validated in Phase 3 |
 | Core browser interface plus capability extensions | Keeps Chrome DevTools first while preserving a future Playwright-compatible calling surface | Validated in Phase 4 |
 | Structured fallback guidance for unsupported browser actions | Browser API coverage is partial; unsupported work must degrade explicitly rather than silently | Validated in Phase 4 |
+| Browser-heavy skills need typed runtime contracts, not prose-only artifacts | `/qa` and `/office-hours` both need testable data shapes for evidence, memo output, and graceful degradation | Validated in Phase 5 |
 
 ## Evolution
 
@@ -91,4 +91,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-02 after Phase 4 completion*
+*Last updated: 2026-04-05 after Phase 5 completion*

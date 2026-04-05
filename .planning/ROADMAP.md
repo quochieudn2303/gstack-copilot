@@ -13,7 +13,7 @@
 - [x] **Phase 2: Command Translation Layer** - Bash → PowerShell mappings + variable handling
 - [x] **Phase 3: First Skill - /review** - Validate full pipeline with non-browser skill
 - [x] **Phase 4: Browser Abstraction** - chrome-devtools MCP backend for $B commands
-- [ ] **Phase 5: Browser Skills - /qa, /office-hours** - High-value browser-using skills
+- [x] **Phase 5: Browser Skills - /qa, /office-hours** - High-value browser-using skills
 - [ ] **Phase 6: Sprint Completion - /ship** - Complete sprint loop + setup + docs
 
 ---
@@ -85,7 +85,8 @@
   2. `/office-hours` can analyze a product page and generate YC-style design feedback
   3. Both skills use the BrowserAdapter for all browser interactions (no raw $B commands)
   4. Skills degrade gracefully when chrome-devtools features are unavailable
-**Plans**: TBD
+**Plans**: 05-01 QA Contract & Artifact, 05-02 Office Hours Contract & Artifact, 05-03 Browser Skill Verification & UAT
+**Completed**: 2026-04-05
 **UI hint**: yes
 
 ---
@@ -112,7 +113,7 @@
 | 2. Command Translation Layer | 3/3 | Complete | 2026-04-02 |
 | 3. First Skill - /review | 3/3 | Complete | 2026-04-02 |
 | 4. Browser Abstraction | 3/3 | Complete | 2026-04-02 |
-| 5. Browser Skills - /qa, /office-hours | 0/? | Not started | - |
+| 5. Browser Skills - /qa, /office-hours | 3/3 | Complete | 2026-04-05 |
 | 6. Sprint Completion - /ship | 0/? | Not started | - |
 
 ---

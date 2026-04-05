@@ -2,7 +2,7 @@
 
 **Project:** Copilot CLI port of gstack
 **Version:** v1.0
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-04-05
 
 ## Summary
 
@@ -100,8 +100,8 @@
 | BROWSE-01 | Phase 4 | Complete (2026-04-02) |
 | BROWSE-02 | Phase 4 | Complete (2026-04-02) |
 | BROWSE-03 | Phase 4 | Complete (2026-04-02) |
-| SKILL-02 | Phase 5 | Pending |
-| SKILL-03 | Phase 5 | Pending |
+| SKILL-02 | Phase 5 | Complete (2026-04-05) |
+| SKILL-03 | Phase 5 | Complete (2026-04-05) |
 | SKILL-04 | Phase 6 | Pending |
 | SETUP-01 | Phase 6 | Pending |
 | SETUP-02 | Phase 6 | Pending |
