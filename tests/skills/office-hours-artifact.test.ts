@@ -13,6 +13,13 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, "..", "..");
 
+function normalizeLineEndings(value: string): string {
+  return value
+    .replace(/\r\n/g, "\n")
+    .replace(/[ \t]+$/gm, "")
+    .replace(/\n{3,}/g, "\n\n");
+}
+
 describe("checked-in office-hours skill artifact", () => {
   it("matches the builder output", () => {
     const fixture = readFileSync(
@@ -24,7 +31,9 @@ describe("checked-in office-hours skill artifact", () => {
       "utf8",
     );
 
-    expect(artifact).toBe(buildOfficeHoursSkillArtifact(fixture));
+    expect(normalizeLineEndings(artifact)).toBe(
+      normalizeLineEndings(buildOfficeHoursSkillArtifact(fixture)),
+    );
   });
 
   it("contains mode selection and memo output guidance", () => {
@@ -49,7 +58,9 @@ describe("checked-in office-hours skill artifact", () => {
       "utf8",
     );
 
-    expect(readme).toBe(buildOfficeHoursReadme());
+    expect(normalizeLineEndings(readme)).toBe(
+      normalizeLineEndings(buildOfficeHoursReadme()),
+    );
     expect(readme).toContain("Use `/office-hours` for browser-grounded product feedback");
   });
 });

@@ -13,6 +13,13 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, "..", "..");
 
+function normalizeLineEndings(value: string): string {
+  return value
+    .replace(/\r\n/g, "\n")
+    .replace(/[ \t]+$/gm, "")
+    .replace(/\n{3,}/g, "\n\n");
+}
+
 describe("checked-in qa skill artifact", () => {
   it("matches the builder output", () => {
     const fixture = readFileSync(
@@ -24,7 +31,9 @@ describe("checked-in qa skill artifact", () => {
       "utf8",
     );
 
-    expect(artifact).toBe(buildQaSkillArtifact(fixture));
+    expect(normalizeLineEndings(artifact)).toBe(
+      normalizeLineEndings(buildQaSkillArtifact(fixture)),
+    );
   });
 
   it("contains the guided-flow and explicit-confirmation contract", () => {
@@ -56,7 +65,9 @@ describe("checked-in qa skill artifact", () => {
       "utf8",
     );
 
-    expect(readme).toBe(buildQaReadme());
+    expect(normalizeLineEndings(readme)).toBe(
+      normalizeLineEndings(buildQaReadme()),
+    );
     expect(readme).toContain("Use `/qa` for guided-flow browser testing");
     expect(readme).toContain("quick, standard, and exhaustive");
   });

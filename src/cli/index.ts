@@ -4,6 +4,7 @@ import { Command } from "commander";
 import pc from "picocolors";
 
 import { convertCommand } from "./convert.js";
+import { setupCommand } from "./setup.js";
 
 const program = new Command()
   .name("gstack-copilot")
@@ -11,6 +12,7 @@ const program = new Command()
   .version("0.1.0");
 
 program.addCommand(convertCommand);
+program.addCommand(setupCommand);
 
 program.parseAsync().catch((error: unknown) => {
   const message = error instanceof Error ? error.message : "Unknown error";
