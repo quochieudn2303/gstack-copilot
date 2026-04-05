@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link rel="icon" href="data:," />
+    <title>SignalForge</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: #f4f7fb;
+        color: #17283f;
+      }
+
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 48px 24px 64px;
+      }
+
+      .hero,
+      .proof,
+      .pricing {
+        background: white;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 18px 40px rgba(23, 40, 63, 0.08);
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: 2.6rem;
+      }
+
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #5a6e88;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      button {
+        font: inherit;
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 16px;
+        cursor: pointer;
+      }
+
+      .primary {
+        background: #0b63f3;
+        color: white;
+      }
+
+      .secondary {
+        background: #e9eff8;
+        color: #17283f;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero" aria-label="Hero">
+        <div class="eyebrow">All-in-one execution</div>
+        <h1 id="hero-title">Everything your team needs to move faster</h1>
+        <p id="hero-copy">
+          SignalForge helps modern teams align work, share updates, and unlock more velocity
+          across every function.
+        </p>
+        <div class="cta-row">
+          <button id="primary-cta" class="primary" type="button">Start free</button>
+          <button id="secondary-cta" class="secondary" type="button">Book demo</button>
+        </div>
+      </section>
+
+      <section class="proof" aria-label="Proof">
+        <h2>Why teams choose SignalForge</h2>
+        <ul id="proof-points">
+          <li>One place for product, ops, and go-to-market work</li>
+          <li>Faster weekly planning with fewer status meetings</li>
+          <li>Used by fast-growing teams across software, fintech, and healthcare</li>
+        </ul>
+      </section>
+
+      <section class="pricing" aria-label="Pricing">
+        <h2>Pricing</h2>
+        <p id="pricing-copy">Plans start at $24 per seat, billed monthly.</p>
+      </section>
+    </main>
+
+    <script>
+      console.log("office-hours-page-ready");
+    </script>
+  </body>
+</html>
