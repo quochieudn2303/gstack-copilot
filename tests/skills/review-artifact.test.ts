@@ -13,6 +13,10 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, "..", "..");
 
+function normalizeLineEndings(value: string): string {
+  return value.replace(/\r\n/g, "\n");
+}
+
 describe("checked-in review skill artifact", () => {
   it("matches the builder output", () => {
     const fixture = readFileSync(
@@ -24,7 +28,9 @@ describe("checked-in review skill artifact", () => {
       "utf8",
     );
 
-    expect(artifact).toBe(buildReviewSkillArtifact(fixture));
+    expect(normalizeLineEndings(artifact)).toBe(
+      normalizeLineEndings(buildReviewSkillArtifact(fixture)),
+    );
   });
 
   it("contains the required frontmatter and behavior sections", () => {
@@ -49,7 +55,7 @@ describe("checked-in review skill artifact", () => {
       "utf8",
     );
 
-    expect(readme).toBe(buildReviewReadme());
+    expect(normalizeLineEndings(readme)).toBe(buildReviewReadme());
     expect(readme).toContain("Use `/review [base-branch]` inside GitHub Copilot CLI.");
     expect(readme).toContain("Verification focus for Phase 3:");
   });

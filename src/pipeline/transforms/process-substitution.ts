@@ -243,7 +243,7 @@ export function transformProcessSubstitutionStage(content: string): string {
     return content;
   }
 
-  const lines = content.split("\n");
+  const lines = content.split(/\r?\n/);
   const transformedLines: string[] = [];
 
   for (const line of lines) {
